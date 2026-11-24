@@ -1,0 +1,1 @@
+{"error":"Kalshi fees.taker.model_fee is unverified in venue-specs (Fee formula and coefficient are on the Kalshi fee schedule, which was not readable here. The fee rounding page's worked example (model fee $0.00363825 for 1 contract at $0.055) is consistent with 0.07 x C x P x (1 - P).) Enter the model fee formula for this leg, in C and P."}

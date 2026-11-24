@@ -1,0 +1,1 @@
+{"event":"PRD Python example: two levels per leg","legs":[{"venue":"kalshi","side":"yes","levels":[[0.41,300],[0.42,500]],"model_fee":"0.07 * C * P * (1 - P)"},{"venue":"polymarket","side":"no","category":"economics","levels":[[0.55,200],[0.56,800]]}],"fixed_costs":2.00,"payout_days":45,"rules_date":"2026-11-24"}

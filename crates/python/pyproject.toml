@@ -1,0 +1,32 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "arbcalc"
+version = "0.1.0"
+description = "Most arbs die after fees. Check yours: cross-venue binary arbs on Kalshi, Polymarket and Hyperliquid HIP-4 after exact fees, rounding and sizing."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = []
+keywords = ["arbitrage", "prediction-markets", "kalshi", "polymarket", "hyperliquid", "fees"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Rust",
+  "Topic :: Office/Business :: Financial :: Investment",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://hunterm777.github.io/arb-hunt/"
+Repository = "https://github.com/hunterm777/arb-hunt"
+
+[tool.maturin]
+python-source = "python"
+module-name = "arbcalc._arbcalc"
+features = ["pyo3/extension-module"]

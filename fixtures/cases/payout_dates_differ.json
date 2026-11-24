@@ -1,0 +1,1 @@
+{"event":"Payout dates differ: capital locked to the later one","legs":[{"venue":"hyperliquid","side":"yes","price":0.62,"size":40,"payout_date":"2026-11-25"},{"venue":"polymarket","side":"no","category":"crypto","price":0.35,"size":60,"payout_date":"2026-12-01"}],"fixed_costs":[0.5,0.25],"rules_date":"2026-11-24"}

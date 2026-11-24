@@ -1,0 +1,1 @@
+{"event":"PRD case 3: Kalshi YES 0.48 + Polymarket NO 0.50, sports","legs":[{"venue":"kalshi","side":"yes","price":0.48,"size":100,"model_fee":"0.07 * C * P * (1 - P)"},{"venue":"polymarket","side":"no","category":"sports","price":0.50,"size":100}],"payout_days":45,"rules_date":"2026-11-24"}

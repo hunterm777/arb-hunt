@@ -1,0 +1,1 @@
+{"event":"Maker on both legs","legs":[{"venue":"polymarket","side":"yes","category":"politics","role":"maker","price":0.47,"size":250},{"venue":"kalshi","side":"no","role":"maker","model_fee":"0.0175 * C * P * (1 - P)","price":0.5,"size":250}],"payout_days":30,"rules_date":"2026-11-24"}

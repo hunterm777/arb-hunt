@@ -1,0 +1,12 @@
+/target
+node_modules/
+web/dist/
+web/src/wasm/
+crates/wasm/pkg/
+__pycache__/
+*.so
+*.pyd
+.venv/
+*.egg-info/
+.pytest_cache/
+crates/wasm/pkg-node/

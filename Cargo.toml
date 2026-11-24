@@ -1,0 +1,29 @@
+[workspace]
+members = ["crates/core", "crates/wasm", "crates/python"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/hunterm777/arb-hunt"
+rust-version = "1.85"
+
+[workspace.dependencies]
+arbcalc-core = { path = "crates/core" }
+# Fee and rounding rules. Pinned to a commit so a rules change is a reviewed bump here.
+venue-specs = { git = "https://github.com/hunterm777/venue-specs", rev = "3e22341835edb1dcfafd7437cea1a9c9c8ba0b7a" }
+# The same decimal type venue-specs uses (one copy in the build).
+rust_decimal = { version = "1.36", default-features = false, features = ["std"] }
+# arbitrary_precision: decimals cross JSON as their exact text, never as binary floats.
+serde_json = { version = "1.0", features = ["arbitrary_precision", "preserve_order"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[profile.wasm]
+inherits = "release"
+opt-level = 3
+panic = "abort"
+strip = "debuginfo"
