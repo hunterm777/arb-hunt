@@ -68,7 +68,8 @@ const chart = await page.evaluate(() => !document.querySelector(".chart")?.class
 await page.screenshot({ path: process.env.SHOT ?? "/tmp/arbcalc.png", fullPage: true });
 
 // The largest check: 200,000 pairs on each side, timed from the edit to the verdict.
-const LARGEST = "Profitable: $10102.00 guaranteed on 200000 pairs";
+// Fixed costs are still the $2.00 typed above.
+const LARGEST = "Profitable: $10100.00 guaranteed on 200000 pairs";
 const t0 = Date.now();
 await typeDepth(["0.41 100000\n0.42 100000", "0.50 100000\n0.51 100000"]);
 await page.waitForFunction((v) => document.querySelector(".verdict")?.textContent === v, { timeout: 30000 }, LARGEST);
