@@ -27,7 +27,8 @@ const requests = [];
 let loaded = false;
 page.on("console", (m) => m.type() === "error" && problems.push(`console: ${m.text()}`));
 page.on("pageerror", (e) => problems.push(`page error: ${e.message}`));
-page.on("request", (r) => loaded && requests.push(r.url()));
+// data: URIs (the date picker's own icon) are not network requests.
+page.on("request", (r) => loaded && !r.url().startsWith("data:") && requests.push(r.url()));
 await page.evaluateOnNewDocument(() => {
   document.addEventListener("securitypolicyviolation", (e) => console.error(`CSP ${e.violatedDirective} ${e.blockedURI}`));
 });
@@ -45,8 +46,10 @@ async function typeDepth(levels) {
   await page.evaluate((levels) => {
     const cards = document.querySelectorAll(".card");
     levels.forEach((text, i) => {
-      const depth = [...cards[i].querySelectorAll(".segmented button")].find((b) => b.textContent === "Depth");
-      depth.click();
+      // Switching to depth runs a check at once, so switch only when not there yet.
+      if (!cards[i].querySelector("textarea")) {
+        [...cards[i].querySelectorAll(".segmented button")].find((b) => b.textContent === "Depth").click();
+      }
       const area = document.querySelectorAll(".card")[i].querySelector("textarea");
       area.value = text;
       area.dispatchEvent(new Event("input", { bubbles: true }));
@@ -65,16 +68,19 @@ const chart = await page.evaluate(() => !document.querySelector(".chart")?.class
 await page.screenshot({ path: process.env.SHOT ?? "/tmp/arbcalc.png", fullPage: true });
 
 // The largest check: 200,000 pairs on each side, timed from the edit to the verdict.
-await typeDepth(["0.41 100000\n0.42 100000", "0.50 100000\n0.51 100000"]);
+const LARGEST = "Profitable: $10102.00 guaranteed on 200000 pairs";
 const t0 = Date.now();
-await page.waitForFunction((v) => document.querySelector(".verdict")?.textContent !== v, {}, example);
+await typeDepth(["0.41 100000\n0.42 100000", "0.50 100000\n0.51 100000"]);
+await page.waitForFunction((v) => document.querySelector(".verdict")?.textContent === v, { timeout: 30000 }, LARGEST);
 const largestMs = Date.now() - t0 - 200; // less the typing pause before a check runs
 const largest = await verdict();
+loaded = false;
 
-await page.setViewport({ width: 390, height: 844, isMobile: true });
-await typeDepth(["0.41 300\n0.42 500", "0.55 200\n0.56 800"]);
-await settle();
-await page.screenshot({ path: process.env.SHOT_MOBILE ?? "/tmp/arbcalc-mobile.png", fullPage: true });
+// A phone-width view of the opening case, in a page of its own.
+const phone = await browser.newPage();
+await phone.setViewport({ width: 390, height: 844, isMobile: true });
+await phone.goto(url, { waitUntil: "networkidle0" });
+await phone.screenshot({ path: process.env.SHOT_MOBILE ?? "/tmp/arbcalc-mobile.png", fullPage: true });
 
 await browser.close();
 server.close();
@@ -86,5 +92,5 @@ const fail =
   !chart ||
   opening !== "Profitable: $1.0625 guaranteed on 100 pairs" ||
   example !== "Profitable: $0.213 guaranteed on 300 pairs" ||
-  largest !== "Profitable: $10102.00 guaranteed on 200000 pairs";
+  largest !== LARGEST;
 process.exit(fail ? 1 : 0);
